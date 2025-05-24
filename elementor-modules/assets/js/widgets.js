@@ -1,112 +1,81 @@
-/*
- * Elementor Modules Widgets JavaScript
+/**
+ * DOT Elementor Modules - Widgets JavaScript
  * 
- * This file handles all interactive functionality for the custom Elementor widgets:
- * 1. Tabs Widget: Manages tab switching and content display
- * 2. Image Lightbox: Handles image popup functionality with captions
+ * This file contains the JavaScript functionality for the DOT Elementor widgets:
+ * 1. DOT Image Lightbox Widget
+ *    - Handles lightbox functionality for images
+ *    - Connected to: widgets/image-lightbox.php
+ * 
+ * 2. DOT Custom Tabs Widget
+ *    - Handles tab switching functionality
+ *    - Connected to: widgets/tabs.php
  * 
  * Dependencies:
  * - jQuery (required by Elementor)
- * - Connected to: widgets/image-lightbox.php and widgets/tabs.php
  */
 
-jQuery(document).ready(function($) {
-    // Tabs Widget Functionality
-    // Handles the switching between tabs and their content
-    // Connected to: widgets/tabs.php
-    $('.tab-title').on('click', function() {
-        var tabId = $(this).data('tab');
-        var $tabsContainer = $(this).closest('.custom-tabs');
-        
-        $tabsContainer.find('.tab-title').removeClass('active');
-        $tabsContainer.find('.tab-content').removeClass('active');
-        
-        $(this).addClass('active');
-        $tabsContainer.find('.tab-content[data-tab="' + tabId + '"]').addClass('active');
+(function($) {
+    'use strict';
+
+    /**
+     * DOT Image Lightbox Widget Functionality
+     * Handles the lightbox behavior for images
+     */
+    function initImageLightbox() {
+        $('.image-lightbox a[data-lightbox]').on('click', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            var imageUrl = $this.attr('href');
+            var imageTitle = $this.data('title');
+
+            // Create lightbox overlay
+            var $overlay = $('<div class="lightbox-overlay"></div>');
+            var $lightbox = $('<div class="lightbox-content"></div>');
+            var $image = $('<img src="' + imageUrl + '" alt="' + imageTitle + '">');
+            var $caption = $('<div class="lightbox-caption">' + imageTitle + '</div>');
+            var $close = $('<button class="lightbox-close">&times;</button>');
+
+            // Assemble lightbox
+            $lightbox.append($image, $caption, $close);
+            $overlay.append($lightbox);
+            $('body').append($overlay);
+
+            // Close lightbox on click
+            $overlay.on('click', function(e) {
+                if (e.target === this) {
+                    $overlay.remove();
+                }
+            });
+
+            $close.on('click', function() {
+                $overlay.remove();
+            });
+        });
+    }
+
+    /**
+     * DOT Custom Tabs Widget Functionality
+     * Handles the tab switching behavior
+     */
+    function initCustomTabs() {
+        $('.tab-title').on('click', function() {
+            var $this = $(this);
+            var tabId = $this.data('tab');
+            
+            // Update active states
+            $this.closest('.tabs-navigation').find('.tab-title').removeClass('active');
+            $this.addClass('active');
+            
+            // Show selected content
+            $this.closest('.custom-tabs').find('.tab-content').removeClass('active');
+            $this.closest('.custom-tabs').find('.tab-content[data-tab="' + tabId + '"]').addClass('active');
+        });
+    }
+
+    // Initialize widgets when Elementor frontend is ready
+    $(window).on('elementor/frontend/init', function() {
+        elementorFrontend.hooks.addAction('frontend/element_ready/dot_image_lightbox.default', initImageLightbox);
+        elementorFrontend.hooks.addAction('frontend/element_ready/dot_custom_tabs.default', initCustomTabs);
     });
 
-    // Image Lightbox Widget Functionality
-    // Creates a popup overlay for images with captions
-    // Connected to: widgets/image-lightbox.php
-    $('.image-lightbox a').on('click', function(e) {
-        e.preventDefault();
-        
-        var imageUrl = $(this).attr('href');
-        var imageTitle = $(this).data('title');
-        
-        // Create lightbox overlay
-        var $overlay = $('<div class="lightbox-overlay"></div>');
-        var $lightbox = $('<div class="lightbox-container"></div>');
-        var $image = $('<img src="' + imageUrl + '" alt="' + imageTitle + '">');
-        var $caption = $('<div class="lightbox-caption">' + imageTitle + '</div>');
-        var $close = $('<div class="lightbox-close">&times;</div>');
-        
-        $lightbox.append($image, $caption, $close);
-        $overlay.append($lightbox);
-        $('body').append($overlay);
-        
-        // Add lightbox styles
-        $('<style>')
-            .text(`
-                .lightbox-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.9);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 9999;
-                }
-                .lightbox-container {
-                    position: relative;
-                    max-width: 90%;
-                    max-height: 90%;
-                }
-                .lightbox-container img {
-                    max-width: 100%;
-                    max-height: 80vh;
-                    display: block;
-                    margin: 0 auto;
-                }
-                .lightbox-caption {
-                    color: white;
-                    text-align: center;
-                    padding: 10px;
-                    font-size: 16px;
-                }
-                .lightbox-close {
-                    position: absolute;
-                    top: -40px;
-                    right: 0;
-                    color: white;
-                    font-size: 30px;
-                    cursor: pointer;
-                    width: 30px;
-                    height: 30px;
-                    line-height: 30px;
-                    text-align: center;
-                }
-            `)
-            .appendTo('head');
-        
-        // Close lightbox handlers
-        $close.on('click', function() {
-            $overlay.remove();
-        });
-        
-        $overlay.on('click', function(e) {
-            if ($(e.target).hasClass('lightbox-overlay')) {
-                $overlay.remove();
-            }
-        });
-        
-        $(document).on('keydown', function(e) {
-            if (e.keyCode === 27) { // ESC key
-                $overlay.remove();
-            }
-        });
-    });
-}); 
+})(jQuery); 

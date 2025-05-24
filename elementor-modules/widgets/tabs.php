@@ -2,15 +2,11 @@
 /**
  * DOT Custom Tabs Widget for Elementor
  * 
- * This widget creates a tabbed interface with the following features:
+ * This widget creates a custom tabs interface with:
  * - Repeater field for adding multiple tabs
- * - Each tab can contain:
- *   - Title
- *   - Image
- *   - Rich text content
- *   - Button with URL
+ * - Each tab contains a title, image, rich text content, and a button with URL
  * - Customizable styling through Elementor controls
- * - Responsive design
+ * - Responsive design with mobile-friendly layout
  * 
  * Connected to:
  * - assets/js/widgets.js (for tab switching functionality)
@@ -24,7 +20,7 @@ class DOT_Tabs_Widget extends \Elementor\Widget_Base {
      * Used for registering the widget in Elementor
      */
     public function get_name() {
-        return 'dot_custom_tabs';
+        return 'dot_tabs';
     }
 
     /**
@@ -60,15 +56,15 @@ class DOT_Tabs_Widget extends \Elementor\Widget_Base {
         $this->start_controls_section(
             'content_section',
             [
-                'label' => __('Tabs Content', 'elementor-modules'),
+                'label' => __('Tabs', 'elementor-modules'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
 
-        // Create repeater for tabs
+        // Tabs repeater
         $repeater = new \Elementor\Repeater();
 
-        // Tab title control
+        // Tab title
         $repeater->add_control(
             'tab_title',
             [
@@ -78,7 +74,7 @@ class DOT_Tabs_Widget extends \Elementor\Widget_Base {
             ]
         );
 
-        // Tab image control
+        // Tab image
         $repeater->add_control(
             'tab_image',
             [
@@ -90,7 +86,7 @@ class DOT_Tabs_Widget extends \Elementor\Widget_Base {
             ]
         );
 
-        // Tab content control (WYSIWYG editor)
+        // Tab content
         $repeater->add_control(
             'tab_content',
             [
@@ -100,7 +96,7 @@ class DOT_Tabs_Widget extends \Elementor\Widget_Base {
             ]
         );
 
-        // Button text control
+        // Tab button text
         $repeater->add_control(
             'button_text',
             [
@@ -110,7 +106,7 @@ class DOT_Tabs_Widget extends \Elementor\Widget_Base {
             ]
         );
 
-        // Button URL control
+        // Tab button URL
         $repeater->add_control(
             'button_url',
             [
@@ -123,7 +119,7 @@ class DOT_Tabs_Widget extends \Elementor\Widget_Base {
             ]
         );
 
-        // Add repeater to main controls
+        // Add repeater to widget
         $this->add_control(
             'tabs',
             [
@@ -132,12 +128,12 @@ class DOT_Tabs_Widget extends \Elementor\Widget_Base {
                 'fields' => $repeater->get_controls(),
                 'default' => [
                     [
-                        'tab_title' => __('Tab #1', 'elementor-modules'),
-                        'tab_content' => __('Tab content goes here', 'elementor-modules'),
+                        'tab_title' => __('Tab 1', 'elementor-modules'),
+                        'tab_content' => __('Tab 1 Content', 'elementor-modules'),
                     ],
                     [
-                        'tab_title' => __('Tab #2', 'elementor-modules'),
-                        'tab_content' => __('Tab content goes here', 'elementor-modules'),
+                        'tab_title' => __('Tab 2', 'elementor-modules'),
+                        'tab_content' => __('Tab 2 Content', 'elementor-modules'),
                     ],
                 ],
                 'title_field' => '{{{ tab_title }}}',
@@ -155,51 +151,144 @@ class DOT_Tabs_Widget extends \Elementor\Widget_Base {
             ]
         );
 
-        // Tab background color control
+        // Tab navigation style
+        $this->add_control(
+            'tab_nav_style',
+            [
+                'label' => __('Tab Navigation', 'elementor-modules'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        // Tab background color
         $this->add_control(
             'tab_background_color',
             [
-                'label' => __('Tab Background Color', 'elementor-modules'),
+                'label' => __('Background Color', 'elementor-modules'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .custom-tabs .tab-title' => 'background-color: {{VALUE}};',
+                    '{{WRAPPER}} .custom-tabs-nav-item' => 'background-color: {{VALUE}};',
                 ],
             ]
         );
 
-        // Tab text color control
-        $this->add_control(
-            'tab_text_color',
-            [
-                'label' => __('Tab Text Color', 'elementor-modules'),
-                'type' => \Elementor\Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .custom-tabs .tab-title' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        // Active tab background color control
+        // Active tab background color
         $this->add_control(
             'active_tab_background_color',
             [
-                'label' => __('Active Tab Background Color', 'elementor-modules'),
+                'label' => __('Active Background Color', 'elementor-modules'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .custom-tabs .tab-title.active' => 'background-color: {{VALUE}};',
+                    '{{WRAPPER}} .custom-tabs-nav-item.active' => 'background-color: {{VALUE}};',
                 ],
             ]
         );
 
-        // Active tab text color control
+        // Tab text color
+        $this->add_control(
+            'tab_text_color',
+            [
+                'label' => __('Text Color', 'elementor-modules'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .custom-tabs-nav-item' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        // Active tab text color
         $this->add_control(
             'active_tab_text_color',
             [
-                'label' => __('Active Tab Text Color', 'elementor-modules'),
+                'label' => __('Active Text Color', 'elementor-modules'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .custom-tabs .tab-title.active' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .custom-tabs-nav-item.active' => 'color: {{VALUE}};',
                 ],
+            ]
+        );
+
+        // Tab typography
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'tab_typography',
+                'selector' => '{{WRAPPER}} .custom-tabs-nav-item',
+            ]
+        );
+
+        // Tab content style
+        $this->add_control(
+            'tab_content_style',
+            [
+                'label' => __('Tab Content', 'elementor-modules'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        // Content text color
+        $this->add_control(
+            'content_text_color',
+            [
+                'label' => __('Text Color', 'elementor-modules'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .custom-tabs-content' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        // Content typography
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'content_typography',
+                'selector' => '{{WRAPPER}} .custom-tabs-content',
+            ]
+        );
+
+        // Button style
+        $this->add_control(
+            'button_style',
+            [
+                'label' => __('Button', 'elementor-modules'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        // Button background color
+        $this->add_control(
+            'button_background_color',
+            [
+                'label' => __('Background Color', 'elementor-modules'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .custom-tabs-button' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        // Button text color
+        $this->add_control(
+            'button_text_color',
+            [
+                'label' => __('Text Color', 'elementor-modules'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .custom-tabs-button' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        // Button typography
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'button_typography',
+                'selector' => '{{WRAPPER}} .custom-tabs-button',
             ]
         );
 
@@ -214,100 +303,31 @@ class DOT_Tabs_Widget extends \Elementor\Widget_Base {
         $settings = $this->get_settings_for_display();
         ?>
         <div class="custom-tabs">
-            <div class="tabs-navigation">
+            <div class="custom-tabs-nav">
                 <?php foreach ($settings['tabs'] as $index => $item) : ?>
-                    <div class="tab-title <?php echo $index === 0 ? 'active' : ''; ?>" data-tab="<?php echo $index; ?>">
+                    <div class="custom-tabs-nav-item <?php echo $index === 0 ? 'active' : ''; ?>" data-tab="<?php echo $index; ?>">
                         <?php echo esc_html($item['tab_title']); ?>
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="tabs-content">
+            <div class="custom-tabs-content-wrapper">
                 <?php foreach ($settings['tabs'] as $index => $item) : ?>
-                    <div class="tab-content <?php echo $index === 0 ? 'active' : ''; ?>" data-tab="<?php echo $index; ?>">
+                    <div class="custom-tabs-content <?php echo $index === 0 ? 'active' : ''; ?>" data-tab="<?php echo $index; ?>">
                         <?php if (!empty($item['tab_image']['url'])) : ?>
-                            <div class="tab-image">
-                                <img src="<?php echo esc_url($item['tab_image']['url']); ?>" alt="<?php echo esc_attr($item['tab_title']); ?>">
-                            </div>
+                            <img src="<?php echo esc_url($item['tab_image']['url']); ?>" alt="<?php echo esc_attr($item['tab_title']); ?>">
                         <?php endif; ?>
-                        <div class="tab-text">
+                        <div class="custom-tabs-text">
                             <?php echo wp_kses_post($item['tab_content']); ?>
                         </div>
                         <?php if (!empty($item['button_text']) && !empty($item['button_url']['url'])) : ?>
-                            <div class="tab-button">
-                                <a href="<?php echo esc_url($item['button_url']['url']); ?>" <?php echo $item['button_url']['is_external'] ? 'target="_blank"' : ''; ?>>
-                                    <?php echo esc_html($item['button_text']); ?>
-                                </a>
-                            </div>
+                            <a href="<?php echo esc_url($item['button_url']['url']); ?>" class="custom-tabs-button" <?php echo $item['button_url']['is_external'] ? 'target="_blank"' : ''; ?>>
+                                <?php echo esc_html($item['button_text']); ?>
+                            </a>
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
-
-        <style>
-            .custom-tabs {
-                width: 100%;
-            }
-            .tabs-navigation {
-                display: flex;
-                border-bottom: 1px solid #ddd;
-            }
-            .tab-title {
-                padding: 10px 20px;
-                cursor: pointer;
-                border: 1px solid #ddd;
-                border-bottom: none;
-                margin-right: 5px;
-                border-radius: 5px 5px 0 0;
-            }
-            .tab-title.active {
-                background-color: #f7f7f7;
-                border-bottom: 1px solid #f7f7f7;
-                margin-bottom: -1px;
-            }
-            .tab-content {
-                display: none;
-                padding: 20px;
-                border: 1px solid #ddd;
-                border-top: none;
-            }
-            .tab-content.active {
-                display: block;
-            }
-            .tab-image {
-                margin-bottom: 20px;
-            }
-            .tab-image img {
-                max-width: 100%;
-                height: auto;
-            }
-            .tab-button {
-                margin-top: 20px;
-            }
-            .tab-button a {
-                display: inline-block;
-                padding: 10px 20px;
-                background-color: #007bff;
-                color: white;
-                text-decoration: none;
-                border-radius: 5px;
-            }
-            .tab-button a:hover {
-                background-color: #0056b3;
-            }
-        </style>
-
-        <script>
-            jQuery(document).ready(function($) {
-                $('.tab-title').on('click', function() {
-                    var tabId = $(this).data('tab');
-                    $('.tab-title').removeClass('active');
-                    $('.tab-content').removeClass('active');
-                    $(this).addClass('active');
-                    $('.tab-content[data-tab="' + tabId + '"]').addClass('active');
-                });
-            });
-        </script>
         <?php
     }
 } 
