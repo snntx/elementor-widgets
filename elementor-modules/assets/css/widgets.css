@@ -1,0 +1,104 @@
+/* Image Lightbox Styles */
+.image-lightbox {
+    position: relative;
+    display: inline-block;
+}
+
+.image-lightbox img {
+    max-width: 100%;
+    height: auto;
+    transition: opacity 0.3s ease;
+}
+
+.image-lightbox img:hover {
+    opacity: 0.9;
+}
+
+.image-lightbox-caption {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Custom Tabs Styles */
+.custom-tabs {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.tabs-navigation {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tab-title {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    margin-right: 5px;
+    border-radius: 5px 5px 0 0;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.tab-title:hover {
+    background-color: #e9ecef;
+}
+
+.tab-title.active {
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-top: none;
+    background-color: #fff;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-image {
+    margin-bottom: 20px;
+}
+
+.tab-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.tab-text {
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.tab-button {
+    margin-top: 20px;
+}
+
+.tab-button a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.tab-button a:hover {
+    background-color: #0056b3;
+    text-decoration: none;
+    color: white;
+} 
